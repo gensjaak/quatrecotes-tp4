@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/dernieres_annonces"
+            android:icon="@drawable/ic_trending_up_black"
+            android:title="@string/dernieres_annonces" />
+        <item
+            android:id="@+id/annonce_au_hasard"
+            android:icon="@drawable/ic_cached_black"
+            android:title="@string/annonce_au_hasard" />
+        <item
+            android:id="@+id/deposer_une_annonce"
+            android:icon="@drawable/ic_add_black"
+            android:title="@string/deposer_une_annonce" />
+        <item
+            android:id="@+id/mes_annonces"
+            android:icon="@drawable/ic_perm_media"
+            android:title="@string/mes_annonces" />
+        <item
+            android:id="@+id/toutes_les_annonces"
+            android:icon="@drawable/ic_subscriptions_black"
+            android:title="@string/toutes_les_annonces" />
+    </group>
+
+    <item android:title="@string/profil">
+        <menu>
+            <item
+                android:id="@+id/mon_profil"
+                android:icon="@drawable/ic_account_circle_black"
+                android:title="@string/mon_profil" />
+            <item
+                android:id="@+id/deconnexion"
+                android:icon="@drawable/ic_eject_black"
+                android:title="@string/deconnexion" />
+        </menu>
+    </item>
+
+</menu>
