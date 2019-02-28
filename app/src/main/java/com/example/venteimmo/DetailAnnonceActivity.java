@@ -14,6 +14,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -62,6 +63,7 @@ public class DetailAnnonceActivity extends AppCompatActivity implements AsyncTas
     private FloatingActionButton photo ,comentaire;
     private static final int PERMISSION_CODE = 1000;
     private static final int IMAGE_CAPTURE_CODE = 1001;
+    private String stringUri;
     Uri image_uri;
     ArrayList<String> listName = new ArrayList<>();
     private String chaine;
@@ -406,7 +408,7 @@ public class DetailAnnonceActivity extends AppCompatActivity implements AsyncTas
 
                            // caract.setText(
                             item.setCommentaire("Commentaire :"+chaine);
-                            caract.setText("Commentaire :"+chaine);
+                            caract.setText("Commentaire :\n"+chaine);
 
                             updateAnnonce();
 
@@ -431,6 +433,13 @@ public class DetailAnnonceActivity extends AppCompatActivity implements AsyncTas
             //set the image captured to our ImageView
             proprieteImage.setImageURI(image_uri);
             //save
+            stringUri = image_uri.toString();
+            item.addImageAnnonce(stringUri);
+            updateUI();
+            item.setImages(item.getImages());
+            Toast.makeText(this, String.valueOf(item.getImages().size()), Toast.LENGTH_SHORT).show();
+            updateAnnonce();
+
         }
     }
 

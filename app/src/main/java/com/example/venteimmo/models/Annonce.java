@@ -102,6 +102,10 @@ public class Annonce implements Parcelable {
         this.commentaire= commentaire;
     }
 
+    public void addImageAnnonce(String cheminImage){
+
+        images.add(cheminImage);
+    }
     public String getId() {
         return id;
     }

@@ -1,5 +1,6 @@
 package com.example.venteimmo;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -9,6 +10,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -136,9 +138,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
 
             case R.id.mon_profil:
+                fragment = null;
+                Intent intent1 = new Intent(this, MonProfil.class);
+
+                startActivity(intent1);
                 break;
 
             case R.id.deconnexion:
+                deconnexion();
                 break;
 
             default:
@@ -152,5 +159,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         this.drawer.closeDrawer(GravityCompat.START);
 
         return true;
+    }
+
+    private void deconnexion() {
+        new AlertDialog.Builder(this)
+                .setTitle("Confirmer")
+                .setMessage("Voulez-vous quitter l'application?")
+                .setPositiveButton("Oui", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+
+                })
+                .setNegativeButton("Non", null)
+                .show();
     }
 }

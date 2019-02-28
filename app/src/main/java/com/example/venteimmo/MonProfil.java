@@ -32,6 +32,8 @@ public class MonProfil extends AppCompatActivity implements AsyncTaskRunner1 {
         // Ajouter un bouton pour revenir en arrière
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        checkVendeur();
     }
 
     private void declareViews1() {
@@ -50,31 +52,26 @@ public class MonProfil extends AppCompatActivity implements AsyncTaskRunner1 {
         if (nom.getText().toString()=="" || prenom.getText().toString() =="" || telephone.getText().toString() =="" || email.getText().toString() == "") {
             Toast.makeText(this, "Veuillez remplir tous les champs", Toast.LENGTH_SHORT).show();
         }else {
-            new AgentAsyncTask1(this, this.database, new Vendeur(nom.getText().toString(), prenom.getText().toString(), telephone.getText().toString(), email.getText().toString())
+            new AgentAsyncTask1(this, this.database, new Vendeur(nom.getText().toString(), prenom.getText().toString(), email.getText().toString(), telephone.getText().toString())
             ).prepareInsertion().execute();
         }
     }
 
-    private void checkAnnonce() {
-        new AgentAsyncTask1(this, this.database, new Vendeur(nom.getText().toString(), prenom.getText().toString(), telephone.getText().toString(), email.getText().toString()))
-                .prepareCheck().execute();
+
+    private void checkVendeur() {
+        new AgentAsyncTask1(this, this.database, null)
+                .prepareGetAll().execute();
     }
 
 
 
     public void modifVendeur(View view) {
-
-
         valider.setEnabled(true);
         nom.setEnabled(true);
         prenom.setEnabled(true);
         telephone.setEnabled(true);
         email.setEnabled(true);
 
-        nom.setText("");
-        prenom.setText("");
-        telephone.setText("");
-        email.setText("");
 
         modif.setEnabled(true);
 
@@ -124,6 +121,12 @@ public class MonProfil extends AppCompatActivity implements AsyncTaskRunner1 {
             telephone.setEnabled(false);
             email.setEnabled(false);
             modif.setEnabled(true);
+
+            nom.setText(vendeur.getNom());
+            prenom.setText(vendeur.getPrenom());
+            telephone.setText(vendeur.getTelephone());
+            email.setText(vendeur.getEmail());
+
         }
     }
 
@@ -131,11 +134,14 @@ public class MonProfil extends AppCompatActivity implements AsyncTaskRunner1 {
 
     @Override
     public void onPostExecute(String method, List<Vendeur> reponse) {
-        vendeur= (Vendeur) reponse.get(0);
+        if (!reponse.isEmpty()){
+            vendeur= (Vendeur) reponse.get(0);
 
-        this.updateUI();
+            this.updateUI();
 
-        Toast.makeText(this, "c'est fais", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, vendeur.getNom(), Toast.LENGTH_SHORT).show();
+        }
+
 
     }
 

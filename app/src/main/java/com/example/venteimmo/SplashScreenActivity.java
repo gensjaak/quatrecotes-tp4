@@ -24,6 +24,7 @@ public class SplashScreenActivity extends AppCompatActivity{
     }
 
     public void monProfil(View view) {
+
     }
 
     public void listAnnonces(View view) {
@@ -34,6 +35,7 @@ public class SplashScreenActivity extends AppCompatActivity{
     public void gotoMainActivity() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
+        finish();
     }
 
     public void postAnnonce(View view) {

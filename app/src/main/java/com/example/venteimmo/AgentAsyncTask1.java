@@ -37,6 +37,7 @@ public class AgentAsyncTask1 extends AsyncTask<Object, Void, Integer> {
         this.reponse = new ArrayList<>();
         Vendeur candidate;
        if (this.method == INSERT_METHOD){
+            this.database.vendeurDao().deleteAll();
             this.database.vendeurDao().insert(this.vendeur);
             candidate = this.database.vendeurDao().findById(this.vendeur.getId());
            if (candidate != null) this.reponse.add(candidate);
@@ -47,7 +48,7 @@ public class AgentAsyncTask1 extends AsyncTask<Object, Void, Integer> {
            if (candidate != null) this.reponse.add(candidate);
        }
        else if (this.method== GETALL_METHOD){
-           this.reponse = (List<Vendeur>) this.database.vendeurDao().getAll().get(0);
+           this.reponse = (List<Vendeur>) this.database.vendeurDao().getAll();
        }
      //  else if (this.method== READ_METHOD){
     //       this.reponse = this.database.vendeurDao().getAll()  ;

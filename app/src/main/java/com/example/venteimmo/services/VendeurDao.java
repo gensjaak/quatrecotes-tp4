@@ -21,4 +21,9 @@ public interface VendeurDao {
     @Insert
     void insert(Vendeur vendeur);
 
+    @Query("DELETE FROM vendeur ")
+    void deleteAll();
+
+
+
 }
