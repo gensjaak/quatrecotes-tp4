@@ -30,6 +30,8 @@ public class Annonce implements Parcelable {
     private int codePostal;
     private ArrayList<String> images;
     private long date;
+    private String commentaire;
+
 
     @Embedded
     private Vendeur vendeur;
@@ -77,12 +79,15 @@ public class Annonce implements Parcelable {
         this.vendeur = in.readParcelable(Vendeur.class.getClassLoader());
         this.images = in.readArrayList(String.class.getClassLoader());
         this.date = in.readLong();
+        this.commentaire=in.readString();
     }
 
     public Annonce() {
     }
 
-    public Annonce(String id, String titre, String description, int nbPieces, ArrayList<String> caracteristiques, int prix, String ville, int codePostal, ArrayList<String> images, long date, Vendeur vendeur) {
+
+
+    public Annonce(String id, String titre, String description, int nbPieces, ArrayList<String> caracteristiques, int prix, String ville, int codePostal, ArrayList<String> images, long date, Vendeur vendeur,String  Commentaire) {
         this.id = id;
         this.titre = titre;
         this.description = description;
@@ -94,6 +99,7 @@ public class Annonce implements Parcelable {
         this.images = images;
         this.date = date;
         this.vendeur = vendeur;
+        this.commentaire= commentaire;
     }
 
     public String getId() {
@@ -111,6 +117,10 @@ public class Annonce implements Parcelable {
     public void setTitre(String titre) {
         this.titre = titre;
     }
+
+    public String getCommentaire() { return commentaire; }
+
+    public void setCommentaire(String commentaire) { this.commentaire = commentaire; }
 
     public String getDescription() {
         return description;
@@ -219,5 +229,6 @@ public class Annonce implements Parcelable {
         dest.writeParcelable(this.vendeur, flags);
         dest.writeList(this.images);
         dest.writeLong(this.date);
+        dest.writeString(this.commentaire);
     }
 }

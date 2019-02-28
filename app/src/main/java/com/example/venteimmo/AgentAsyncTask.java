@@ -15,6 +15,7 @@ public class AgentAsyncTask extends AsyncTask<Object, Void, Integer> {
     public static final String DELETE_METHOD = "DELETE";
     public static final String CHECK_METHOD = "CHECK";
     public static final String GETALL_METHOD = "GETALL";
+    public static final String UPDATE_METHOD = "UPDATE";
 
     private Annonce annonce;
     private List<Annonce> reponse = new ArrayList<>();
@@ -57,6 +58,11 @@ public class AgentAsyncTask extends AsyncTask<Object, Void, Integer> {
             case GETALL_METHOD:
                 this.reponse = this.database.annonceDao().getAll();
                 break;
+            case UPDATE_METHOD:
+                this.database.annonceDao().update(this.annonce);
+                candidate = this.database.annonceDao().findById(this.annonce.getId());
+                if (candidate != null) this.reponse.add(candidate);
+                break;
         }
 
         return null;
@@ -89,6 +95,11 @@ public class AgentAsyncTask extends AsyncTask<Object, Void, Integer> {
 
     public AsyncTask prepareGetAll() {
         this.method = GETALL_METHOD;
+
+        return this;
+    }
+    public AsyncTask prepareUpdate() {
+        this.method = UPDATE_METHOD;
 
         return this;
     }

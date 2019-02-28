@@ -4,6 +4,7 @@ import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
+import android.arch.persistence.room.Update;
 
 import com.example.venteimmo.models.Annonce;
 
@@ -19,6 +20,9 @@ public interface AnnonceDao {
 
     @Insert
     void insert(Annonce annonce);
+
+    @Update
+    void update(Annonce annonce);
 
     @Delete
     void delete(Annonce annonce);

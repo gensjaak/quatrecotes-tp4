@@ -17,6 +17,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -33,11 +35,7 @@ import com.example.venteimmo.services.AsyncTaskRunner;
 import com.example.venteimmo.utils.AnnonceApiResponse;
 
 
-import com.glide.slider.library.Animations.DescriptionAnimation;
-import com.glide.slider.library.SliderLayout;
 import com.glide.slider.library.SliderTypes.BaseSliderView;
-import com.glide.slider.library.SliderTypes.DefaultSliderView;
-import com.glide.slider.library.SliderTypes.TextSliderView;
 import com.glide.slider.library.Tricks.ViewPagerEx;
 
 
@@ -60,13 +58,13 @@ public class DetailAnnonceActivity extends AppCompatActivity implements AsyncTas
     private RelativeLayout loadingPanel;
     private TextView proprietePrix, proprieteVille, proprieteDescription, proprieteDatePublication, vendeurNom, vendeurEmail, vendeurTelephone,nmbrep,caract,codepos;
     private ImageView proprieteImage;
-    private SliderLayout sliderLayout;
     private ImageButton favorite, unFavorite;
-    private FloatingActionButton photo;
+    private FloatingActionButton photo ,comentaire;
     private static final int PERMISSION_CODE = 1000;
     private static final int IMAGE_CAPTURE_CODE = 1001;
     Uri image_uri;
     ArrayList<String> listName = new ArrayList<>();
+    private String chaine;
 
 
     private AppDatabase database;
@@ -74,7 +72,7 @@ public class DetailAnnonceActivity extends AppCompatActivity implements AsyncTas
             .baseUrl(Constants.API_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build();
-
+    private int parcout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,6 +96,8 @@ public class DetailAnnonceActivity extends AppCompatActivity implements AsyncTas
 
         //camera
         this.camera();
+        //commentaire
+        this.commentaire();
 
 
 
@@ -127,7 +127,8 @@ public class DetailAnnonceActivity extends AppCompatActivity implements AsyncTas
 
         this.photo=findViewById(R.id.photo);
 
-        this.sliderLayout=findViewById(R.id.imageSlider);
+        this.comentaire=findViewById(R.id.comentaire);
+        //this.sliderLayout=findViewById(R.id.imageSlider);
     }
 
 
@@ -142,8 +143,10 @@ public class DetailAnnonceActivity extends AppCompatActivity implements AsyncTas
             this.proprieteVille.setText(this.item.getVille());
             this.proprieteDescription.setText(this.item.getDescription());
             this.proprieteDatePublication.setText(this.item.getFormattedDate());
+            if(this.item.getCommentaire() != null){
+                this.caract.setText(this.item.getCommentaire());
+            }
 
-            //   this.caract.setText(this.); manque caracteristique
             this.nmbrep.setText(this.item.getFormattedPiece());
             this.codepos.setText(this.item.getFormattedPostal());
 
@@ -155,41 +158,51 @@ public class DetailAnnonceActivity extends AppCompatActivity implements AsyncTas
             }
 
             // Affiche l'image de l'annonce
-            RequestOptions requestOptions = new RequestOptions();
-            requestOptions.centerCrop();
-
-            for (int i = 0; i < this.item.getImages().size(); i++) {
-                DefaultSliderView sliderView = new DefaultSliderView(this) {
+            parcout =1;
+            if (this.item.getImages().size() != 0) {
+                proprieteImage.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public View getView() {
-                        return null;
+                    public void onClick(View v) {
+
+                        if(parcout== item.getImages().size()){
+                            parcout=0;
+                        }
+                        Glide.with(getApplicationContext()).load(item.getImages().get(parcout)).apply(new RequestOptions().centerCrop()).into(proprieteImage);
+                        supportPostponeEnterTransition();
+                        proprieteImage.getViewTreeObserver().addOnPreDrawListener(
+                                new ViewTreeObserver.OnPreDrawListener() {
+                                    @Override
+                                    public boolean onPreDraw() {
+                                        proprieteImage.getViewTreeObserver().removeOnPreDrawListener(this);
+                                        supportStartPostponedEnterTransition();
+                                        return true;
+                                    }
+                                }
+                        );
+                        parcout++;
+
                     }
-                };
-                // if you want show image only / without description text use DefaultSliderView instead
-
-                // initialize SliderLayout
-                sliderView
-                        .image(item.getImages().get(i))
-                        .setRequestOption(requestOptions)
-                        .setOnSliderClickListener(this);
-
-                //add your extra information
-                sliderView.bundle(new Bundle());
-                sliderLayout.addSlider(sliderView);
-
+                });
             }
 
-            sliderLayout.setPresetTransformer(SliderLayout.Transformer.Default);
-            sliderLayout.setPresetTransformer(SliderLayout.Transformer.Accordion);
 
-            sliderLayout.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
-            sliderLayout.setCustomAnimation(new DescriptionAnimation());
-            sliderLayout.setDuration(4000);
-            sliderLayout.addOnPageChangeListener(this);
+            Glide.with(this.getApplicationContext()).load(this.item.getImages().get(0)).apply(new RequestOptions().centerCrop()).into(this.proprieteImage);
+            supportPostponeEnterTransition();
+            this.proprieteImage.getViewTreeObserver().addOnPreDrawListener(
+                    new ViewTreeObserver.OnPreDrawListener() {
+                        @Override
+                        public boolean onPreDraw() {
+                            proprieteImage.getViewTreeObserver().removeOnPreDrawListener(this);
+                            supportStartPostponedEnterTransition();
+                            return true;
+                        }
+                    }
+            );
 
-            // Cacher le panel de loading*/
-            this.loadingPanel.setVisibility(View.GONE);
         }
+        // Cacher le panel de loading*/
+            this.loadingPanel.setVisibility(View.GONE);
+
     }
 
     // Effectue l'appel API, parse le JSON et créé l'objet Java correspondant
@@ -225,6 +238,7 @@ public class DetailAnnonceActivity extends AppCompatActivity implements AsyncTas
         if (data != null) {
             this.item = data.getParcelable(ANNONCE_TRAVELLER_KEY);
             this.checkAnnonce();
+
         } else {
             // Sinon, faire un appel API pour prendre une donnée au hasard
             this.makeApiCall();
@@ -248,9 +262,16 @@ public class DetailAnnonceActivity extends AppCompatActivity implements AsyncTas
         if (reponse.isEmpty()) { // L'annonce n'existe pas dans la base de données locale
             this.favorite.setVisibility(View.VISIBLE);
             this.unFavorite.setVisibility(View.GONE);
+            this.comentaire.hide();
+            this.photo.hide();
+            this.caract.setVisibility(View.GONE);
+
         } else {
             this.favorite.setVisibility(View.GONE);
             this.unFavorite.setVisibility(View.VISIBLE);
+            this.comentaire.show();
+            this.photo.show();
+            this.caract.setVisibility(View.VISIBLE);
         }
 
         this.updateUI();
@@ -264,6 +285,11 @@ public class DetailAnnonceActivity extends AppCompatActivity implements AsyncTas
 
     private void checkAnnonce() {
         new AgentAsyncTask(this, this.database, this.item).prepareCheck().execute();
+    }
+
+    private void updateAnnonce(){
+        new AgentAsyncTask(this,this.database,this.item).prepareUpdate().execute();
+
     }
 
     public void removeAnnonce(View view) {
@@ -346,6 +372,57 @@ public class DetailAnnonceActivity extends AppCompatActivity implements AsyncTas
 
     }
 
+
+    // commentaire
+
+    public void commentaire(){
+
+        //voir si cette methode peut etre autre part
+        this.comentaire.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                AlertDialog.Builder mBuilder = new AlertDialog.Builder(DetailAnnonceActivity.this);
+                View mView = getLayoutInflater().inflate(R.layout.commentaire_annonce, null);
+                final EditText commentaire = (EditText) mView.findViewById(R.id.addcom);
+                Button valider = (Button) mView.findViewById(R.id.bt_valider);
+                mBuilder.setView(mView);
+                final AlertDialog dialog = mBuilder.create();
+                dialog.show();
+
+                valider.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if(!commentaire.getText().toString().isEmpty()){
+                            Toast.makeText(DetailAnnonceActivity.this,
+                                    getString(R.string.validation),
+                                    Toast.LENGTH_SHORT).show();
+                            dialog.dismiss();
+
+
+                           // DetailAnnonceActivity.
+                            chaine = commentaire.getText().toString();
+
+
+                           // caract.setText(
+                            item.setCommentaire("Commentaire :"+chaine);
+                            caract.setText("Commentaire :"+chaine);
+
+                            updateAnnonce();
+
+                        }else{
+                            Toast.makeText(DetailAnnonceActivity.this,
+                                    getString(R.string.error),
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+            }
+        });
+
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         //appelé quand l'image a été capturée par la caméra
@@ -353,8 +430,12 @@ public class DetailAnnonceActivity extends AppCompatActivity implements AsyncTas
         if (resultCode == RESULT_OK){
             //set the image captured to our ImageView
             proprieteImage.setImageURI(image_uri);
+            //save
         }
     }
+
+    // methode save
+
 
 
     @Override

@@ -45,4 +45,7 @@
     <string name="nombre_de_piece">Nombre de pieces</string>
     <string name="Code_postal">Code postal</string>
     <string name="Valider">Valider</string>
+    <string name="comment">veuillez saisir votre commentaire</string>
+    <string name="error">remplire le champs</string>
+    <string name="validation">commentaire valider</string>
 </resources>

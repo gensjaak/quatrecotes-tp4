@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.webkit.WebView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -162,15 +163,15 @@ public class DeposerAnnonceFragment extends AppMainFragment  {
         DisplayMetrics dm = new DisplayMetrics();
         WindowManager windowManager = (WindowManager) getActivity().getSystemService(WINDOW_SERVICE);
         windowManager.getDefaultDisplay().getMetrics(dm);
-        int w = Math.round(dm.widthPixels / dm.density)*(80/100);
+        int w = Math.round(dm.widthPixels / dm.density)*(50/100);
 
         imageAff.add(imageV);
         ImageView addphoto = new ImageView(getActivity());
         addphoto.setImageURI(imageV);
         LinearLayout.LayoutParams dim = new LinearLayout.LayoutParams(h,w);
 
-        addphoto.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
-
+       // addphoto.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+        addphoto.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
         // addphoto.setLayoutParams(dim);
         ((ViewGroup)getActivity().findViewById(R.id.imageAdd)).addView(addphoto);

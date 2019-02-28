@@ -7,118 +7,120 @@
     tools:context=".DeposerAnnonceFragment">
 
     <ScrollView
+        android:id="@+id/scrollView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
         <LinearLayout
-            android:id="@+id/imageAdd"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:orientation="horizontal"
-            android:paddingStart="20dp"
-            android:paddingTop="20dp"
-            android:paddingBottom="20dp"
-            android:background="@mipmap/tmp">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/imageAdd"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:background="@mipmap/tmp"
+                android:orientation="horizontal"
+                android:paddingStart="20dp"
+                android:paddingTop="20dp"
+                android:paddingBottom="20dp">
 
 
+            </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/proprieteDetails"
+                android:layout_width="match_parent"
+                android:layout_height="434dp"
+                android:orientation="vertical"
+                android:paddingLeft="25dp"
+                android:paddingTop="15dp"
+                android:paddingRight="25dp"
+                android:paddingBottom="25dp">
 
+                <EditText
+                    android:id="@+id/titre"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="Titre"
+                    android:inputType="textPersonName"
+                    tools:ignore="HardcodedText" />
 
+                <EditText
+                    android:id="@+id/description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="@string/Description"
+                    android:inputType="textPersonName" />
 
+                <EditText
+                    android:id="@+id/nombre_de_pieces"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="@string/nombre_de_piece"
+                    android:inputType="number" />
+
+                <EditText
+                    android:id="@+id/caracteristiques"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="@string/Caractéristique"
+                    android:inputType="textPersonName" />
+
+                <EditText
+                    android:id="@+id/prix"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="@string/Prix"
+                    android:inputType="number" />
+
+                <EditText
+                    android:id="@+id/code_postal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="@string/Code_postal"
+                    android:inputType="number" />
+
+                <Button
+                    android:id="@+id/valider"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/colorAccent"
+                    android:onClick="valider"
+                    android:text="@string/Valider" />
+            </LinearLayout>
 
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/proprieteDetails"
-            android:layout_width="match_parent"
-            android:layout_height="434dp"
-            android:orientation="vertical"
-            android:paddingLeft="25dp"
-            android:paddingTop="15dp"
-            android:paddingRight="25dp"
-            android:paddingBottom="25dp">
 
-            <EditText
-                android:id="@+id/titre"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Titre"
-                android:inputType="textPersonName"
-                tools:ignore="HardcodedText" />
-
-            <EditText
-                android:id="@+id/description"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="@string/Description"
-                android:inputType="textPersonName" />
-
-            <EditText
-                android:id="@+id/nombre_de_pieces"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="@string/nombre_de_piece"
-                android:inputType="number" />
-
-            <EditText
-                android:id="@+id/caracteristiques"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="@string/Caractéristique"
-                android:inputType="textPersonName" />
-
-            <EditText
-                android:id="@+id/prix"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="@string/Prix"
-                android:inputType="number" />
-
-            <EditText
-                android:id="@+id/code_postal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="@string/Code_postal"
-                android:inputType="number" />
-
-            <Button
-                android:id="@+id/valider"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@color/colorAccent"
-                android:onClick="valider"
-                android:text="@string/Valider" />
-        </LinearLayout>
-
-    </LinearLayout>
-
-
-</ScrollView>
+    </ScrollView>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/photo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="276dp"
-        android:layout_marginEnd="16dp"
-        android:backgroundTint="@color/colorPrimaryDark"
+        android:layout_marginStart="19dp"
+        android:layout_marginTop="656dp"
 
+        android:layout_marginEnd="321dp"
+        android:layout_marginBottom="19dp"
+        android:backgroundTint="@color/colorPrimaryDark"
         android:src="@drawable/ic_adjust"
         app:elevation="4dp"
         app:fabSize="normal"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintHorizontal_bias="0.969"
+        app:layout_constraintStart_toEndOf="@+id/scrollView2"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
 
 </android.support.constraint.ConstraintLayout>
