@@ -58,10 +58,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         this.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FragmentManager fragmentManager = getSupportFragmentManager();
+                /*FragmentManager fragmentManager = getSupportFragmentManager();
                 AppMainFragment fragment = new DeposerAnnonceFragment();
                 fragmentManager.beginTransaction().replace(R.id.dynamicContent, fragment).commit();
-                toolbar.setTitle(R.string.deposer_une_annonce);
+                toolbar.setTitle(R.string.deposer_une_annonce);*/
+                vueEnMaintenance();
             }
         });
 
@@ -71,6 +72,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         // The navigation view listener binding
         this.navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    private void vueEnMaintenance() {
+        new AlertDialog.Builder(this)
+                .setTitle("Oups !")
+                .setMessage("La vue \n\"Dépôt d'une annonce\"\n est en cours de maintenance, veuillez revenir plus tard.")
+                .setPositiveButton("Okay", null)
+                .show();
     }
 
     private void declareViews() {
@@ -100,7 +109,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_about) {
+            new AlertDialog.Builder(this)
+                    .setTitle("Equipe de développement")
+                    .setMessage("Quatre côtés: \n\n\t\t\tChekina TATY - 21710425\n\t\t\tJean-Jacques AKAKPO - 21811857\n\t\t\tPaule OBONE ENGOUANG - 21713181\n\t\t\tDesty MPASSI MATONDO - 21711427")
+                    .setPositiveButton("Félicitations", null)
+                    .show();
             return true;
         }
 
@@ -122,7 +136,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
 
             case R.id.deposer_une_annonce:
-                fragment = new DeposerAnnonceFragment();
+                // fragment = new DeposerAnnonceFragment();
+                vueEnMaintenance();
                 break;
 
             case R.id.mes_annonces:
@@ -154,8 +169,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if (fragment != null) {
             fragmentManager.beginTransaction().replace(R.id.dynamicContent, fragment).commit();
+            this.toolbar.setTitle(item.getTitle().toString());
         }
-        this.toolbar.setTitle(item.getTitle().toString());
         this.drawer.closeDrawer(GravityCompat.START);
 
         return true;

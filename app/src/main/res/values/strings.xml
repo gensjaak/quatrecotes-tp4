@@ -17,7 +17,7 @@
     <string name="nav_header_title">Android Studio</string>
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_about">A propos</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="dernieres_annonces">Dernières annonces</string>
     <string name="annonce_au_hasard">Annonce au hasard</string>
@@ -45,7 +45,7 @@
     <string name="nombre_de_piece">Nombre de pieces</string>
     <string name="Code_postal">Code postal</string>
     <string name="Valider">Valider</string>
-    <string name="comment">veuillez saisir votre commentaire</string>
+    <string name="comment">Veuillez saisir votre commentaire</string>
     <string name="error">remplire le champs</string>
     <string name="validation">commentaire valider</string>
 </resources>

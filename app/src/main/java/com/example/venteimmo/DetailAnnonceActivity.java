@@ -14,7 +14,6 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -34,11 +33,8 @@ import com.example.venteimmo.models.Vendeur;
 import com.example.venteimmo.services.AnnonceService;
 import com.example.venteimmo.services.AsyncTaskRunner;
 import com.example.venteimmo.utils.AnnonceApiResponse;
-
-
 import com.glide.slider.library.SliderTypes.BaseSliderView;
 import com.glide.slider.library.Tricks.ViewPagerEx;
-
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,24 +53,24 @@ public class DetailAnnonceActivity extends AppCompatActivity implements AsyncTas
     private Annonce item = null;
 
     private RelativeLayout loadingPanel;
-    private TextView proprietePrix, proprieteVille, proprieteDescription, proprieteDatePublication, vendeurNom, vendeurEmail, vendeurTelephone,nmbrep,caract,codepos;
+    private TextView proprietePrix, proprieteVille, proprieteDescription, proprieteDatePublication, vendeurNom, vendeurEmail, vendeurTelephone, nmbrep, caract, codepos;
     private ImageView proprieteImage;
     private ImageButton favorite, unFavorite;
-    private FloatingActionButton photo ,comentaire;
+    private FloatingActionButton photo, comentaire;
     private static final int PERMISSION_CODE = 1000;
     private static final int IMAGE_CAPTURE_CODE = 1001;
     private String stringUri;
     Uri image_uri;
     ArrayList<String> listName = new ArrayList<>();
     private String chaine;
-
-
     private AppDatabase database;
     private Retrofit retrofit = new Retrofit.Builder()
             .baseUrl(Constants.API_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build();
     private int parcout;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,12 +96,6 @@ public class DetailAnnonceActivity extends AppCompatActivity implements AsyncTas
         this.camera();
         //commentaire
         this.commentaire();
-
-
-
-
-
-
     }
 
     private void declareViews() {
@@ -127,13 +117,11 @@ public class DetailAnnonceActivity extends AppCompatActivity implements AsyncTas
         this.nmbrep = findViewById(R.id.Nbpiece);
 
 
-        this.photo=findViewById(R.id.photo);
+        this.photo = findViewById(R.id.photo);
 
-        this.comentaire=findViewById(R.id.comentaire);
+        this.comentaire = findViewById(R.id.comentaire);
         //this.sliderLayout=findViewById(R.id.imageSlider);
     }
-
-
 
     // Mettre à jour la vue quand la donnée est prête
     private void updateUI() {
@@ -145,7 +133,7 @@ public class DetailAnnonceActivity extends AppCompatActivity implements AsyncTas
             this.proprieteVille.setText(this.item.getVille());
             this.proprieteDescription.setText(this.item.getDescription());
             this.proprieteDatePublication.setText(this.item.getFormattedDate());
-            if(this.item.getCommentaire() != null){
+            if (this.item.getCommentaire() != null) {
                 this.caract.setText(this.item.getCommentaire());
             }
 
@@ -160,14 +148,14 @@ public class DetailAnnonceActivity extends AppCompatActivity implements AsyncTas
             }
 
             // Affiche l'image de l'annonce
-            parcout =1;
+            parcout = 1;
             if (this.item.getImages().size() != 0) {
                 proprieteImage.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
 
-                        if(parcout== item.getImages().size()){
-                            parcout=0;
+                        if (parcout == item.getImages().size()) {
+                            parcout = 0;
                         }
                         Glide.with(getApplicationContext()).load(item.getImages().get(parcout)).apply(new RequestOptions().centerCrop()).into(proprieteImage);
                         supportPostponeEnterTransition();
@@ -203,7 +191,7 @@ public class DetailAnnonceActivity extends AppCompatActivity implements AsyncTas
 
         }
         // Cacher le panel de loading*/
-            this.loadingPanel.setVisibility(View.GONE);
+        this.loadingPanel.setVisibility(View.GONE);
 
     }
 
@@ -277,20 +265,20 @@ public class DetailAnnonceActivity extends AppCompatActivity implements AsyncTas
         }
 
         this.updateUI();
-
-        Toast.makeText(this, "J'ai fini", Toast.LENGTH_SHORT).show();
     }
 
     public void saveAnnonce(View view) {
         new AgentAsyncTask(this, this.database, this.item).prepareInsertion().execute();
+
+        Toast.makeText(this, "Annonce bien sauvegardée", Toast.LENGTH_SHORT).show();
     }
 
     private void checkAnnonce() {
         new AgentAsyncTask(this, this.database, this.item).prepareCheck().execute();
     }
 
-    private void updateAnnonce(){
-        new AgentAsyncTask(this,this.database,this.item).prepareUpdate().execute();
+    private void updateAnnonce() {
+        new AgentAsyncTask(this, this.database, this.item).prepareUpdate().execute();
 
     }
 
@@ -328,14 +316,13 @@ public class DetailAnnonceActivity extends AppCompatActivity implements AsyncTas
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         //cette méthode est appelée lorsque l'utilisateur appuie sur Autoriser ou Refuser à partir de la fenêtre de demande de permission
-        switch (requestCode){
-            case PERMISSION_CODE:{
+        switch (requestCode) {
+            case PERMISSION_CODE: {
                 if (grantResults.length > 0 && grantResults[0] ==
-                        PackageManager.PERMISSION_GRANTED){
+                        PackageManager.PERMISSION_GRANTED) {
                     //l'autorisation de popup a été accordée
                     openCamera();
-                }
-                else {
+                } else {
                     //l'autorisation de popup a été refusée
                     Toast.makeText(this, "Permission refusée...", Toast.LENGTH_SHORT).show();
                 }
@@ -344,28 +331,26 @@ public class DetailAnnonceActivity extends AppCompatActivity implements AsyncTas
     }
     // camera
 
-    public void camera(){
+    public void camera() {
         //voir si cette methode peut etre autre part
         this.photo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //if system os is >= marshmallow, request runtime permission
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     if (checkSelfPermission(Manifest.permission.CAMERA) ==
                             PackageManager.PERMISSION_DENIED ||
                             checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) ==
-                                    PackageManager.PERMISSION_DENIED){
+                                    PackageManager.PERMISSION_DENIED) {
                         //permission not enabled, request it
                         String[] permission = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
                         //show popup to request permissions
                         requestPermissions(permission, PERMISSION_CODE);
-                    }
-                    else {
+                    } else {
                         //permission already granted
                         openCamera();
                     }
-                }
-                else {
+                } else {
                     //system os < marshmallow
                     openCamera();
                 }
@@ -377,7 +362,7 @@ public class DetailAnnonceActivity extends AppCompatActivity implements AsyncTas
 
     // commentaire
 
-    public void commentaire(){
+    public void commentaire() {
 
         //voir si cette methode peut etre autre part
         this.comentaire.setOnClickListener(new View.OnClickListener() {
@@ -395,24 +380,21 @@ public class DetailAnnonceActivity extends AppCompatActivity implements AsyncTas
                 valider.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if(!commentaire.getText().toString().isEmpty()){
-                            Toast.makeText(DetailAnnonceActivity.this,
-                                    getString(R.string.validation),
-                                    Toast.LENGTH_SHORT).show();
+                        if (!commentaire.getText().toString().isEmpty()) {
                             dialog.dismiss();
 
 
-                           // DetailAnnonceActivity.
+                            // DetailAnnonceActivity.
                             chaine = commentaire.getText().toString();
 
 
-                           // caract.setText(
-                            item.setCommentaire("Commentaire :"+chaine);
-                            caract.setText("Commentaire :\n"+chaine);
+                            // caract.setText(
+                            item.setCommentaire("Commentaire :" + chaine);
+                            caract.setText("Commentaire :\n" + chaine);
 
                             updateAnnonce();
 
-                        }else{
+                        } else {
                             Toast.makeText(DetailAnnonceActivity.this,
                                     getString(R.string.error),
                                     Toast.LENGTH_SHORT).show();
@@ -429,7 +411,7 @@ public class DetailAnnonceActivity extends AppCompatActivity implements AsyncTas
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         //appelé quand l'image a été capturée par la caméra
 
-        if (resultCode == RESULT_OK){
+        if (resultCode == RESULT_OK) {
             //set the image captured to our ImageView
             proprieteImage.setImageURI(image_uri);
             //save
@@ -445,11 +427,9 @@ public class DetailAnnonceActivity extends AppCompatActivity implements AsyncTas
 
     // methode save
 
-
-
     @Override
     public void onSliderClick(BaseSliderView slider) {
-        Toast.makeText(this, slider.getBundle().get("extra")+"", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, slider.getBundle().get("extra") + "", Toast.LENGTH_SHORT).show();
     }
 
     @Override
